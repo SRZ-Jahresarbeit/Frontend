@@ -9,7 +9,7 @@
 }
 
 .sensor{
-    @apply sm:text-lg xl:text-xl mt-6 mr-6 p-4 w-full bg-white rounded-md overflow-hidden shadow-md hover:bg-red-600
+    @apply sm:text-lg xl:text-xl mt-6 mr-6 p-4 w-full bg-white rounded-md overflow-hidden shadow-md
 }
 
 body {
