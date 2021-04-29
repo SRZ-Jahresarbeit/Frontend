@@ -61,9 +61,26 @@
                 Sensor Data
             </h2>
 
-            <button type = "button" onclick= "addSensor()" class ="btnadd mt-4 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500">
+            <button type = "button" id="add1" onclick= "selectSensor()" class ="mt-6 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
                 +Add
             </button>
+
+            <div class ="hidden mt-6 text-lg" id = "add2">
+                <select id="choice" class= "white rounded-md border-2 border-red-600">
+                    <option>--------</option>
+                    <option value = "">Test1</option>
+                    <option value = "">Test2</option>
+                </select>
+                <br>
+                Name: <br>
+                Unit: <br>
+                ID: <br>
+                <button type = "button" onclick= "addSensor()" class ="mt-4 mb-4 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
+                    +Add
+                </button>
+
+            </div>
+
             <div id= "sensors">
 
                 <div class = "sensor flex flex-row hidden justify-between" id= "sensor0">
@@ -81,6 +98,8 @@
                 </div>
 
             </div>
+
+            
         </div>
 
         
