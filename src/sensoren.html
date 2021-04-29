@@ -2,6 +2,8 @@
 
 <head>
     <link href="tailwind.css" rel="stylesheet" type="text/css">
+    <script language="javascript" type="text/javascript" src="sensor_list.js"></script>
+    <script language="javascript" type="text/javascript" src="sensor.js"></script>
     <script language="javascript" type="text/javascript" src="index.js"></script>
     <script src="https://unpkg.com/htmx.org@1.3.1" integrity="sha384-fIzHaKYVrEFxI4/dWpMzf9tlIUPU0HmW8w/8s4nQHvZmGQhXhnEM6aenC6QFkd7e" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -54,17 +56,30 @@
         </div>
 
 
-        <div class = "w-full px-16 pt-2 bg-gray-100">                             <!--content-->
+        <div class = "w-full px-16 pt-2 bg-gray-100" id = "dashboard">                             <!--content-->
             <h2 class="text-gray-700 text-6xl font-semibold flex justify-center items-center">
                 Sensor Data
             </h2>
 
-            <button type = "button" class ="btnadd mt-4 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500">
+            <button type = "button" onclick= "addSensor()" class ="btnadd mt-4 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500">
                 +Add
             </button>
+            <div id= "sensors">
 
-            <div class = "sensor grid grid-cols-1">
-                Sensor
+                <div class = "sensor flex flex-row hidden justify-between" id= "sensor0">
+                    <div>
+                        Sensor
+                    </div>
+                    <div class = "mt-1 flex flex-none">
+                        <button type = "button" onclick="removeSensor(this.id)" id = "0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
