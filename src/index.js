@@ -29,9 +29,10 @@ function addSensor(){
 
     var value = document.querySelector("#choice").value;
 
-    var name = "";
-    var unit = "";
-    var id = "";
+    var name = document.querySelector("#sN").value;
+    var unit = document.querySelector("#sU").value;
+    var id = processAPICrSe(name, unit);
+
     var new_sensor = new sensor(name, unit, id);
 
     var div_id = sensors.length() + 1;
@@ -50,4 +51,58 @@ function removeSensor(id){
     sensors.remove(list_id);
 
     console.log(sensors.print_list());
+}
+
+async function APIcreateSensor(name, unit){
+    const data = {
+        "name": name,
+        "unit": unit
+    }
+
+    try{
+        const response = await fetch("http://localhost:8080/sensor", {
+            headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify(data)
+        });
+        const responseData = await response.json();
+        return responseData;
+    }catch(error){
+        alert(error);
+        console.error(error)
+    }
+}
+
+async function processAPICrSe(name, unit){
+    const APIresponseData = await APIcreateSensor(name, unit);
+    const id = APIresponseData.id;
+
+    return id;
+}
+
+async function APIgetSensors(){
+    var path = "http://localhost:8080/sensor";
+    try{
+        const response = await fetch(path, {
+            headers: {
+                Accept: "*/*"
+            },
+            method: "GET"
+        });
+        const responseData = await response.json();
+        return responseData;
+    }
+    catch(error){
+        alert(error);
+        console.error(error)
+    }
+}
+
+async function processAPIGeSe(){
+    const APIresponseData = await APIgetSensors();
+
+    return APIresponseData;
 }
