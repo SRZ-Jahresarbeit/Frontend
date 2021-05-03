@@ -66,14 +66,22 @@
             </button>
 
             <div class ="hidden mt-6 text-lg" id = "add2">
-                <select id="choice" class= "white rounded-md border-2 border-red-600">
-                    <option>--------</option>
-                    <option value = "">Test1</option>
-                    <option value = "">Test2</option>
-                </select>
+                <div class= "flex flex-row">
+                    <select id="choice" class= "white rounded-md border-2 border-red-600">
+                        <option>--------</option>
+                        <option value = "">Test1</option>
+                        <option value = "">Test2</option>
+                    </select>
+                    <div>
+                        <svg class="w-7 h-7 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
                 <br>
-                Name: <input type="text" id="sN"><br>
-                Unit: <input type="text" id="sU"><br>
+                Name: <span id = "sensorName"></span> <br>
+                Unit: <span id = "sensorUnit"></span> <br>
                 ID: <br>
                 <button type = "button" onclick= "addSensor()" class ="mt-4 mb-4 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
                     +Add
@@ -83,17 +91,40 @@
 
             <div id= "sensors">
 
-                <div class = "sensor flex flex-row hidden justify-between" id= "sensor0">
-                    <div>
-                        Sensor
+                <div class = "sensor flex flex-col hidden " id= "sensor0">
+                    <div class = "flex flex-row justify-between">
+
+                        <div>
+                            <button type = "button" class = "hidden" onclick="foldInfoldOut(this.id)" id = "i0">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                    </path>
+                                </svg>
+                            </button>
+
+                            <button type = "button" class = "" onclick="foldInfoldOut(this.id)" id = "o0">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                                    </path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <span class = "text-2xl">Sensor x</span>
+
+                        <div class = "flex flex-none">
+                            <button type = "button" onclick="removeSensor(this.id)" id = "0">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                                    </path>
+                                </svg>
+                            </button>
+                        </div>
+
                     </div>
-                    <div class = "mt-1 flex flex-none">
-                        <button type = "button" onclick="removeSensor(this.id)" id = "0">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                                </path>
-                            </svg>
-                        </button>
+
+                    <div class = "mt-6" id = "d0">
+                        Sensordaten
                     </div>
                 </div>
 
@@ -105,7 +136,7 @@
         
     </div>
 
-    <div class = "w-full min-h-5pr">                                  <!--footer-->  
+    <div class = " w-full min-h-5pr">                                  <!--footer-->  
         footer
     </div>
     <script language="javascript" type="text/javascript" src="index.js"></script>

@@ -7,6 +7,31 @@ function switchMenuBar(){
     }
 }
 
+function foldInfoldOut(this_id){
+
+    
+    var id = this_id.charAt(1);
+    var id1 = "#" + "o" + id;
+    var id2 = "#" + "i" + id;
+    var id3 = "#" + "d" + id;
+
+    const div_fold_out = document.querySelector(id1);
+    const div_fold_in = document.querySelector(id2);
+    const div_data = document.querySelector(id3);
+
+    if (div_fold_out.classList.contains("hidden")){
+        div_fold_in.classList.add("hidden");
+        div_fold_out.classList.remove("hidden");
+        div_data.classList.remove("hidden");
+        
+    }else{
+        div_fold_out.classList.add("hidden");
+        div_fold_in.classList.remove("hidden");
+        div_data.classList.add("hidden");
+        console.log("test");
+    }
+}
+
 let sensors = new sensor_list();
 
 function selectSensor(){
@@ -17,6 +42,8 @@ function selectSensor(){
     add1.classList.add("hidden");
     add2.classList.remove("hidden");
 
+    console.log("Liste der Sensoren:")
+    console.log(APIgetSensors());
 }
 
 function addSensor(){
@@ -29,8 +56,8 @@ function addSensor(){
 
     var value = document.querySelector("#choice").value;
 
-    var name = document.querySelector("#sN").value;
-    var unit = document.querySelector("#sU").value;
+    var name = document.querySelector("#sensorName").value;
+    var unit = document.querySelector("#sensorUnit").value;
     var id = processAPICrSe(name, unit);
 
     var new_sensor = new sensor(name, unit, id);
@@ -71,7 +98,7 @@ async function APIcreateSensor(name, unit){
         const responseData = await response.json();
         return responseData;
     }catch(error){
-        alert(error);
+        //alert(error);
         console.error(error)
     }
 }
@@ -96,7 +123,7 @@ async function APIgetSensors(){
         return responseData;
     }
     catch(error){
-        alert(error);
+        //alert(error);
         console.error(error)
     }
 }
