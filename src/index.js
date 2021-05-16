@@ -298,7 +298,7 @@ async function APIgetSensors(){
     }
     catch(error){
         //alert(error);
-        console.error(error)
+        console.error(error);
     }
 }
 
@@ -306,4 +306,88 @@ async function processAPIGeSe(){
     const APIresponseData = await APIgetSensors();
 
     return APIresponseData;
+}
+
+async function APIgetData(id, timefrom, timeto, resolution){
+    //Time Example: 2021-04-30T12%3A33%3A00Z  -  2021-04-30T12:33:00Z
+
+    timefrom = convertTime(timefrom); //Convert ISO 8601 Format to required format for fetching
+
+
+    if(timeto != 0 || timeto != null){
+        timeto = convertTime(timeto); //Convert ISO 8601 Format to required format for fetching
+        var path = "http://localhost:8080/sensor/" + id + "/data/?from=" + timefrom + "&to=" + timeto + "&resolution=" + resolution; //set path for fetching from the API
+    }else{
+        var path = "http://localhost:8080/sensor/" + id + "/data/?from=" + timefrom + "&&resolution=" + resolution; //set path for fetching from the API
+    }
+
+    try{
+        const response = await fetch(path , {
+            headers: {
+                Accept: "*/*"
+            }
+        });
+        const responseData = await response.json();
+        return responseData;
+    }
+    catch(error){
+        console.error(error);
+    }
+    
+}
+
+async function processAPIGeDa(){
+    //id, timefrom, timeto, resolution
+
+    var id = "2e6b4d73-776c-48cb-a118-47b79916df64";
+    var timefrom = "2021-05-13T19:30:00Z";
+    var timeto = "2021-05-13T19:32:44Z";
+    var resolution = "MINUTELY";
+
+    const APIresponseData = await APIgetData(id, timefrom, timeto, resolution);
+    var ChartData = [];
+
+    for(var i = 0; i < APIresponseData.length; i++){
+        ChartData[i] = {
+          x: APIresponseData[i].timestamp,
+          y: APIresponseData[i].value
+        }
+    }
+
+    
+    var options = {
+        chart: {
+            type: 'line'
+        },
+        stroke: {
+            curve: 'straight'
+        },
+        series: [{
+            data: ChartData
+        }],
+        xaxis: {
+            type: 'category'
+        }
+    }
+
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+
+    //1620934260
+}
+
+function createChart(){
+    processAPIGeDa()
+}
+
+function convertTime(time){
+
+    var temp1 = time.substring(0,13)
+    var temp2 = time.substring(14,16)
+    var temp3 = time.substring(17,20)
+
+
+    var convertedTime = temp1 + "%3A" + temp2 + "%3A" + temp3;
+
+    return convertedTime;
 }

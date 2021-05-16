@@ -7,7 +7,7 @@
     <script language="javascript" type="text/javascript" src="sensor.js"></script>
     <script language="javascript" type="text/javascript" src="index.js"></script>
     <script src="https://unpkg.com/htmx.org@1.3.1" integrity="sha384-fIzHaKYVrEFxI4/dWpMzf9tlIUPU0HmW8w/8s4nQHvZmGQhXhnEM6aenC6QFkd7e" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body class="text-gray-600 font-sans">
     <div class = "w-full min-h-600px md:min-h-95pr flex flex-row " id = "container">              <!--maincontainer-->
@@ -151,6 +151,14 @@
                 +Add
             </button>
 
+            <button type="button" onclick="getSensors()" class="mt-6 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
+                Get Sensors
+            </button>
+
+            <button type="button" onclick="createChart()" class="mt-6 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
+                Create Chart
+            </button>
+
             <div class ="hidden mt-6 text-lg" id = "add0">
                 <div class= "flex flex-row">
                     <select id="choice0" class= "white rounded-md border-2 border-red-600">
@@ -216,6 +224,8 @@
 
             </div>
 
+            <div id="chart"></div>
+            
         </div>
 
         
