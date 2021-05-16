@@ -2,14 +2,15 @@
 
 <head>
     <link href="tailwind.css" rel="stylesheet" type="text/css">
-    <script language="javascript" type="text/javascript" src="sensor_list.js"></script>
+    <script language="javascript" type="text/javascript" src="dashboard_list.js"></script>
+    <script language="javascript" type="text/javascript" src="dashboard.js"></script>
     <script language="javascript" type="text/javascript" src="sensor.js"></script>
     <script language="javascript" type="text/javascript" src="index.js"></script>
     <script src="https://unpkg.com/htmx.org@1.3.1" integrity="sha384-fIzHaKYVrEFxI4/dWpMzf9tlIUPU0HmW8w/8s4nQHvZmGQhXhnEM6aenC6QFkd7e" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="text-gray-600 font-sans">
-    <div class = "w-full min-h-600px md:min-h-95pr flex flex-row ">             <!--maincontainer-->
+    <div class = "w-full min-h-600px md:min-h-95pr flex flex-row " id = "container">              <!--maincontainer-->
 
         <div class = "flex flex-row-reverse">                          <!--navigation-->
 
@@ -28,46 +29,131 @@
                     <h2 class = "font-bold text-4xl">Menu</h2>
                 </div>
 
-                <div class = "mt-10 border-l-4 border-white">
-                    <a href="index.html" class = "ml-3 flex flex-row">
+                <div class = "mt-10" id="addDashboard">                   <!--add new dasboard_button-->
+                    <button type = "button" onclick= "addDashboard()">
+                        <svg class="  ml-3 w-7 h-7 rounded-full border-4 border-white hover:border-gray-200 hover:bg-gray-200 transition ease-out duration-1000" fill="none" stroke="#4B5563" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                            </path>
+                        </svg>
+                    </button>
+                    
+                </div>
+
+                <div class = "mt-10 mb-2 hidden" id="createDashboard">                   <!--create new dasboard-->
+                    <input type = "text" id = "inputDName1" class = "ml-4 w-32 px-2 border-4 border-gray-200 outline-none rounded-md">
+                    </input>
+                    
+                    <div class = "mt-1 flex flex-row justify-between">
+                        <button type = "button" onclick= "createDashboard()">
+                            <svg class="ml-3 w-7 h-7 rounded-full border-4 border-white hover:border-gray-200 hover:bg-gray-200 transition ease-out duration-1000" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                        </button >
+                        <button type = "button" onclick= "createDashboardCancel()">
+                            <svg class="w-7 h-7 mr-1 rounded-full border-4 border-white hover:border-gray-200 hover:bg-gray-200 transition ease-out duration-1000" fill="none" stroke="#4B5563" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class = "mt-10 mb-2 hidden" id="editDashboard">                   <!--edit dasboard-->
+
+                    <div class = "flex flex-row">
+                        <input type = "text" id = "inputDName2" class = "ml-4 w-24 px-2 border-4 border-gray-200 outline-none rounded-md">
+                        </input>
+                        <div id = "delete">
+                            <button type = "button" id = "delete0" onclick= "deleteDashboard(this.id)">
+                                <svg class="w-8 h-8 ml-1 rounded-full border-4 border-white hover:border-gray-200 hover:bg-gray-200 transition ease-out duration-1000" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                    </path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class = "mt-1 flex flex-row justify-between" id="rename">
+                        <button type = "button" id = "rename0" onclick= "renameDashboard(this.id)">
+                            <svg class="ml-3 w-7 h-7 rounded-full border-4 border-white hover:border-gray-200 hover:bg-gray-200 transition ease-out duration-1000" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                        </button>
+                        <button type = "button" onclick= "renameDashboardCancel()">
+                            <svg class="w-7 h-7 mr-1 rounded-full border-4 border-white hover:border-gray-200 hover:bg-gray-200 transition ease-out duration-1000" fill="none" stroke="#4B5563" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class = "mt-3 selectedTab" id = "menuHome">
+                    <button type = "button" class = "ml-3 flex flex-row" onclick="selectTab(this.id)" id = "menuHomeSelect">
                         <svg class="w-5 h-5 " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
                             </path>
                         </svg>
-                        <span class = "ml-2">
+                        <span class = "ml-2 font-medium">
                             Home
                         </span>
-                    </a>
+                    </button>
                 </div>
 
-                <div class = "mt-2 border-l-4 border-red-600 font-bold">
-                    <a href="sensoren.html" class = "ml-3 flex flex-row">
+                <div class = "mt-2 unselectedTab flex flex-row justify-between  hidden" id = "menuDashboard0">
+                    <button type = "button" class = "ml-3 flex flex-row" id = "menuDashboardSelect0" onclick="selectTab(id)">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
                             </path>
                         </svg>
-                        <span class = "ml-2">
+                        <span class = "ml-2 font-medium" id = "name0">
                             Sensors
                         </span>
-                    </a>
+                    </button>
+                    <button class = "" type = "button" id= "change0" onclick="changeDashboardSettings(this.id)">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                            </path>
+                        </svg>
+                    </button>
                 </div>
 
             </div>
         </div>
 
 
-        <div class = "w-full px-16 pt-2 bg-gray-100" id = "dashboard">                             <!--content-->
+        <div class = "w-full px-16 pt-2 bg-gray-100" id = "contentHome">                             <!--content home-->
+            <h2 class="text-gray-700 text-6xl font-semibold flex justify-center items-center">
+                Weather station
+            </h2>
+            <p class = "mt-6 sm:text-lg xl:text-xl">Frontend
+            </p>
+            <p>
+                Here you can find our documentation: <a href="https://srz-jahresarbeit.github.io/docs/Frontend/">
+                    <span class = "italic">
+                        https://srz-jahresarbeit.github.io/docs/Frontend/
+                    </span>
+                </a>
+            </p>
+        </div>
+
+
+        <div class = "w-full px-16 pt-2 bg-gray-100 hidden" id = "dashboard0">      <!--content dashboard-->
             <h2 class="text-gray-700 text-6xl font-semibold flex justify-center items-center">
                 Sensor Data
             </h2>
 
-            <button type = "button" id="add1" onclick= "selectSensor()" class ="mt-6 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
+            <button type = "button" id="select0" onclick= "selectSensor(this.id)" class ="mt-6 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
                 +Add
             </button>
 
-            <div class ="hidden mt-6 text-lg" id = "add2">
+            <div class ="hidden mt-6 text-lg" id = "add0">
                 <div class= "flex flex-row">
-                    <select id="choice" class= "white rounded-md border-2 border-red-600">
+                    <select id="choice0" class= "white rounded-md border-2 border-red-600">
                         <option>--------</option>
                         <option value = "">Test1</option>
                         <option value = "">Test2</option>
@@ -83,26 +169,26 @@
                 Name: <span id = "sensorName"></span> <br>
                 Unit: <span id = "sensorUnit"></span> <br>
                 ID: <br>
-                <button type = "button" onclick= "addSensor()" class ="mt-4 mb-4 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
+                <button type = "button" onclick= "addSensor(this.id)" id = "createSensor0" class ="mt-4 mb-4 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
                     +Add
                 </button>
 
             </div>
 
-            <div id= "sensors">
+            <div id= "sensors0">
 
-                <div class = "sensor flex flex-col hidden " id= "sensor0">
+                <div class = "sensor flex flex-col hidden " id= "0sensor0">
                     <div class = "flex flex-row justify-between">
 
                         <div>
-                            <button type = "button" class = "hidden" onclick="foldInfoldOut(this.id)" id = "i0">
+                            <button type = "button" class = "hidden" onclick="foldInfoldOut(this.id)" id = "0i0">
                                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
                                     </path>
                                 </svg>
                             </button>
 
-                            <button type = "button" class = "" onclick="foldInfoldOut(this.id)" id = "o0">
+                            <button type = "button" class = "" onclick="foldInfoldOut(this.id)" id = "0o0">
                                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
                                     </path>
@@ -113,7 +199,7 @@
                         <span class = "text-2xl">Sensor x</span>
 
                         <div class = "flex flex-none">
-                            <button type = "button" onclick="removeSensor(this.id)" id = "0">
+                            <button type = "button" onclick="removeSensor(this.id)" id = "0r0">
                                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
                                     </path>
@@ -123,20 +209,23 @@
 
                     </div>
 
-                    <div class = "mt-6" id = "d0">
+                    <div class = "mt-6" id = "0d0">
                         Sensordaten
                     </div>
                 </div>
 
             </div>
 
-            
         </div>
 
         
+
+        
+
     </div>
 
-    <div class = " w-full min-h-5pr">                                  <!--footer-->  
+
+    <div class = " w-full min-h-5pr ">                                  <!--footer-->  
         footer
     </div>
     <script language="javascript" type="text/javascript" src="index.js"></script>

@@ -5,62 +5,53 @@ class sensor {
         this.sensor_id = id;
         this.content = null;
 
+        this.dashboard_id = 0;
+
     }
 
-    create(div_id) {                       //create div-box
-        const clone = document.querySelector("#sensor0")
+    create(div_id, new_dashboard_id) {                       //create div-box
+        var cloneID = "0sensor" + new_dashboard_id;
+        const clone = document.getElementById(cloneID);
         this.content = clone.cloneNode(true);
         this.content.classList.remove("hidden");
 
-        this.content.id = "sensor" + div_id;
+        this.content.id = div_id + "sensor" + new_dashboard_id;
+        this.reset(0, div_id, new_dashboard_id, new_dashboard_id);
+        this.dashboard_id = new_dashboard_id;
 
-        this.reset(0, div_id);
+        //this.content.classList.add(div_id);
 
-        this.content.classList.add(div_id);
-
-        document.querySelector("#sensors").appendChild(this.content);
+        var sensorsId = "#sensors" + new_dashboard_id;
+        document.querySelector(sensorsId).appendChild(this.content);
     }
-    
+
     delete() {                       //delete div-box
-        var item = document.getElementById(this.content.id);
-        document.querySelector("#sensors").removeChild(item);
+        var sensor = document.getElementById(this.content.id);
+        var id = "#sensors" + this.dashboard_id;
+        document.querySelector(id).removeChild(sensor);
     }
 
-    reset(old_div_id, new_div_id) {
+    reset(old_div_id, new_div_id, old_dashboard_id, new_dashboard_id) {         //reset div-id's
+        	                                                                    //all values are strings
+        this.content.id = new_div_id + "sensor" + new_dashboard_id;      
+        this.dashboard_id = new_dashboard_id;
 
-        this.content.id = "sensor" + new_div_id;
         this.content.childNodes.forEach(ele => {
-            ele.childNodes.forEach(ele1 => {
-                ele1.childNodes.forEach(ele2 => {
-                    if (ele2.id == old_div_id) {
-                        ele2.id = new_div_id;
-                    }else{
-                        console.log("Element nicht gefunden")
+            ele.childNodes.forEach(ele2 =>{
+                ele2.childNodes.forEach(ele3 =>{
+                    if(ele3.id == old_div_id + "i" + old_dashboard_id){
+                        ele3.id = new_div_id + "i" + new_dashboard_id;
                     }
-                })
-            })
-        });
-        this.content.childNodes.forEach(ele => {
-            ele.childNodes.forEach(ele1 => {
-                ele1.childNodes.forEach(ele2 =>{
-                    if (ele2.id == ("o" + old_div_id)) {
-                        ele2.id = "o"+ new_div_id;
+                    if(ele3.id == old_div_id + "o" + old_dashboard_id){
+                        ele3.id = new_div_id + "o" + new_dashboard_id;
                     }
-                })
-            })
-        });
-        this.content.childNodes.forEach(ele => {
-            ele.childNodes.forEach(ele1 => {
-                ele1.childNodes.forEach(ele2 =>{
-                    if (ele2.id == ("i" + old_div_id)) {
-                        ele2.id = "i"+ new_div_id;
-                    }
-                })
-            })
-        });
-        this.content.childNodes.forEach(ele =>{
-            if(ele.id == ("d" + old_div_id)){
-                ele.id = "d" + new_div_id;
+                    if(ele3.id == old_div_id + "r" + old_dashboard_id){
+                        ele3.id = new_div_id + "r" + new_dashboard_id;
+                    } 
+                });
+            });
+            if(ele.id == old_div_id + "d" + old_dashboard_id){
+                ele.id = new_div_id + "d" + new_dashboard_id;
             }
         });
 
