@@ -98,6 +98,9 @@ function addSensor(id){
     var choiceID = "#choice" + dashboardID;
     var value = document.querySelector(choiceID).value;
 
+    var name = "";
+    var unit = "";
+    var id = "";
 
     //var name = document.querySelector("#sensorName").value;
     //var unit = document.querySelector("#sensorUnit").value;
@@ -367,6 +370,9 @@ async function processAPIGeDa(){
         }],
         xaxis: {
             type: 'category'
+        },
+        markers: {
+            size: 4
         }
     }
 
