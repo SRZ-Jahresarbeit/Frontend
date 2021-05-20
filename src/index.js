@@ -52,7 +52,7 @@ function getDashboardID(idname){    //Die Dashboard ID ist immer die letzte Zahl
     return dashboardID;
 }
 
-function getSensorID(idname){       //Die Sensor ID ist immer die erste Zahl in der ID des Elemsents
+function getSensorID(idname){       //Die Sensor ID ist immer die erste Zahl in der ID des Elements
                                     //die Funktion returnt "", wenn es keine SensorID gibt
     var sensorID = "";
     for(var i = 0; i < idname.length; i++){
@@ -68,7 +68,7 @@ function getSensorID(idname){       //Die Sensor ID ist immer die erste Zahl in 
     return "";
 }
 
-function selectSensor(id){
+async function selectSensor(id){
 
     var dashboardID = getDashboardID(id);
     var selectButtonID = "#select" + dashboardID;
@@ -79,12 +79,67 @@ function selectSensor(id){
     selectButton.classList.add("hidden");
     addDiv.classList.remove("hidden");
 
-    //console.log("Liste der Sensoren:")
-    //console.log(APIgetSensors());
+    var id2 = "#choice0";
+    var id3 = "choice" + dashboardID;
+    const clone = document.querySelector(id2);
+    var content = clone.cloneNode(true);
+    content.id = "choice" + dashboardID;
+
+    var parent = document.getElementById(id3).parentNode;
+    parent.removeChild(document.getElementById(id3));
+    var sensors = await APIgetSensors();
+    console.log("sensors");
+    console.log(sensors);
+
+    for(var i = 0; i < sensors.length; i++){
+        var option = document.createElement("option");
+        option.text = sensors[i].name;
+        option.value = sensors[i].id;
+        content.add(option, content[i]);
+    }
+
+    parent.appendChild(content);
+    refreshSensorData(id);
+
 }
 
+async function refreshSensorData(id){
 
-function addSensor(id){
+    var dashboardID = getDashboardID(id);
+    var choiceID = "choice" + dashboardID;
+    var sensorNameID = "sensorName" + dashboardID;
+    var sensorUnitID = "sensorUnit" + dashboardID;
+    var sensorIDID = "sensorID" + dashboardID;
+
+    var choice = document.getElementById(choiceID);
+    var sensorName = document.getElementById(sensorNameID);
+    var sensorUnit = document.getElementById(sensorUnitID);
+    var sensorID = document.getElementById(sensorIDID)
+
+    var sensors = await APIgetSensors();
+    console.log(sensors);
+    var value = choice.value;
+    if(value == "--------"){
+        sensorName.innerText = "";
+        sensorUnit.innerText = "";
+        sensorID.innerText = "";
+    }
+    for(var i = 0; i < sensors.length; i++){
+        console.log(sensors[i].id + i);
+        i = i;
+        if(value == sensors[i].id){
+            sensorName.innerText = sensors[i].name
+            sensorUnit.innerText = sensors[i].unit
+            sensorID.innerText = sensors[i].id;
+        }
+    }
+
+
+
+    
+}
+
+async function addSensor(id){
 
     var dashboardID = getDashboardID(id);
     var selectButtonID = "#select" + dashboardID;
@@ -97,13 +152,24 @@ function addSensor(id){
 
     var choiceID = "#choice" + dashboardID;
     var value = document.querySelector(choiceID).value;
-
-
-    //var name = document.querySelector("#sensorName").value;
-    //var unit = document.querySelector("#sensorUnit").value;
-    //var id = processAPICrSe(name, unit);
-
-    var new_sensor = new sensor("", 0, 0);
+    var sensorName;
+    var sensorUnit;
+    var sensorID;
+    var sensors = await APIgetSensors();
+    for(var i = 0; i < sensors.length; i++){
+        console.log(sensors[i].id + i);
+        i = i;
+        if(value == sensors[i].id){
+            sensorName = sensors[i].name
+            sensorUnit = sensors[i].unit
+            sensorID = sensors[i].id;
+        }
+    }
+    if (sensorID != null){
+        var new_sensor = new sensor(sensorName, sensorUnit, sensorID);
+    }else{  
+        var new_sensor = new sensor(sensorName, sensorUnit, sensorID);  //später soll das hier weg; jetzt: nur zum test
+    }
 
     var new_sensorID = dashboards.list[parseInt(dashboardID)-1].length() + 1;
     new_sensor.create(new_sensorID, parseInt(dashboardID));
@@ -253,6 +319,9 @@ function selectTab(id){
     }
 }
 
+function ausgabe(){
+    console.log(APIgetSensors());
+}
 
 async function APIcreateSensor(name, unit){
     const data = {

@@ -133,9 +133,17 @@
             <p class = "mt-6 sm:text-lg xl:text-xl">Frontend
             </p>
             <p>
-                Here you can find our documentation: <a href="https://srz-jahresarbeit.github.io/docs/Frontend/">
+                Here you can find our documentation: 
+                <a href="https://srz-jahresarbeit.github.io/docs/Frontend/">
                     <span class = "italic">
                         https://srz-jahresarbeit.github.io/docs/Frontend/
+                    </span>
+                </a>
+                <br>
+                Here you can create or delete Sensors:
+                <a href="http://localhost:8080/webjars/swagger-ui/index.html?configUrl=/api-docs/swagger-config#/">
+                    <span class = "italic">
+                        http://localhost:8080/webjars/swagger-ui/index.html?configUrl=/api-docs/swagger-config#/
                     </span>
                 </a>
             </p>
@@ -151,7 +159,7 @@
                 +Add
             </button>
 
-            <button type="button" onclick="getSensors()" class="mt-6 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
+            <button type="button" onclick="ausgabe()" class="mt-6 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
                 Get Sensors
             </button>
 
@@ -162,21 +170,19 @@
             <div class ="hidden mt-6 text-lg" id = "add0">
                 <div class= "flex flex-row">
                     <select id="choice0" class= "white rounded-md border-2 border-red-600">
-                        <option>--------</option>
-                        <option value = "">Test1</option>
-                        <option value = "">Test2</option>
+                        <option value = "--------">--------</option>
                     </select>
-                    <div>
+                    <button type = "button" id = "refresh0" onclick = "refreshSensorData(this.id)">
                         <svg class="w-7 h-7 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
                             </path>
                         </svg>
-                    </div>
+                    </button>
                 </div>
                 <br>
-                Name: <span id = "sensorName"></span> <br>
-                Unit: <span id = "sensorUnit"></span> <br>
-                ID: <br>
+                Name: <span id = "sensorName0"></span> <br>
+                Unit: <span id = "sensorUnit0"></span> <br>
+                ID: <span id = "sensorID0"></span> <br>
                 <button type = "button" onclick= "addSensor(this.id)" id = "createSensor0" class ="mt-4 mb-4 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider">
                     +Add
                 </button>

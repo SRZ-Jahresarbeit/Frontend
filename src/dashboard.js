@@ -55,12 +55,25 @@ class dashboard{
                         if(ele3.id == "choice" + old_dashboard_id){
                             ele3.id = "choice" + new_dashboard_id;
                         }
+                        if(ele3.id == "refresh" + old_dashboard_id){
+                            ele3.id = "refresh" + new_dashboard_id;
+                        }
                     });
                     if(ele2.id == "createSensor" + old_dashboard_id){
                         ele2.id = "createSensor" + new_dashboard_id;
                     }
+                    if(ele2.id == "sensorName" + old_dashboard_id){
+                        ele2.id = "sensorName" + new_dashboard_id;
+                    }
+                    if(ele2.id == "sensorUnit" + old_dashboard_id){
+                        ele2.id = "sensorUnit" + new_dashboard_id;
+                    }
+                    if(ele2.id == "sensorID" + old_dashboard_id){
+                        ele2.id = "sensorID" + new_dashboard_id;
+                    }
                 });
             }
+            
             if(ele.id == "sensors" + old_dashboard_id){
                 ele.id = "sensors" + new_dashboard_id;
             }
