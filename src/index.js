@@ -436,6 +436,9 @@ async function processAPIGeDa(){
         }],
         xaxis: {
             type: 'category'
+        },
+        markers: {
+            size: 4
         }
     }
 
