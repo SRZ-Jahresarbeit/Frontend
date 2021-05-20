@@ -350,6 +350,10 @@ async function processAPICrSe(name, unit){
     const APIresponseData = await APIcreateSensor(name, unit);
     const id = APIresponseData.id;
 
+    console.log("Created Sensor")
+
+    printSensors()
+
     return id;
 }
 
@@ -464,4 +468,20 @@ function convertTime(time){
     var convertedTime = temp1 + "%3A" + temp2 + "%3A" + temp3;
 
     return convertedTime;
+}
+
+async function printSensors(){
+    const APIresponseData = await APIgetSensors();
+    var temp = "<h1 class='mt-6 sm:text-lg xl:text-xl'>Sensoren</h1><table class='table-fixed'><tr><th class='w-1/5 text-left'>Name</th><th class='w-16'>Unit</th><th class='w-auto text-left'>id</th></tr>";
+    for (const sensor in APIresponseData) {
+        if (Object.hasOwnProperty.call(APIresponseData, sensor)) {
+            const element = APIresponseData[sensor];
+            temp += "<tr><td>" + element.name + "</td><td class='text-center'>" + element.unit + "</td><td>" + element.id + "</td></tr>";
+        }
+    }
+    temp += "</table>";
+
+    document.querySelector("#allSensors").innerHTML = temp;
+    document.querySelector("#sName").value = "";
+    document.querySelector("#sUnit").value = "";
 }
