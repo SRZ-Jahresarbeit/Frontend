@@ -368,6 +368,8 @@ async function APIgetSensors(){
     catch(error){
         //alert(error);
         console.error(error);
+        alert("Backend kann nicht erreicht werden")
+        alert(error);
     }
 }
 
