@@ -95,6 +95,9 @@ class dashboard{
                                     ele7.id = "0r" + new_dashboard_id;
                                 } 
                             });
+                            if(ele6.id == "0sensorName" + old_dashboard_id){
+                                ele6.id = "0sensorName" + new_dashboard_id;
+                            }
                         });
                         if(ele5.id == "0d" + old_dashboard_id){
                             ele5.id = "0d" + new_dashboard_id;

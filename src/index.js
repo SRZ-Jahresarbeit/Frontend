@@ -171,10 +171,11 @@ async function addSensor(id){
             sensorID = sensors[i].id;
         }
     }
+    var new_sensor
     if (sensorID != null){
-        var new_sensor = new sensor(sensorName, sensorUnit, sensorID);
+        new_sensor = new sensor(sensorName, sensorUnit, sensorID);
     }else{  
-        var new_sensor = new sensor(sensorName, sensorUnit, sensorID);  //später soll das hier weg; jetzt: nur zum test
+        new_sensor = new sensor(sensorName, sensorUnit, sensorID);  //später soll das hier weg; jetzt: nur zum test
     }
 
     var new_sensorID = dashboards.list[parseInt(dashboardID)-1].length() + 1;
