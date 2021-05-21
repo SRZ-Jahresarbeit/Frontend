@@ -8,7 +8,7 @@ RUN npm ci
 
 COPY . .
 
-RUN npx tailwindcss-cli@latest build -o src/tailwind.css
+RUN npx tailwindcss-cli@latest build src/styles.css -o src/tailwind.css
 
 FROM nginx:stable-alpine
 
