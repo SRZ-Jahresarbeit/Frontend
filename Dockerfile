@@ -13,5 +13,3 @@ RUN npx tailwindcss-cli@latest build src/styles.css -o src/tailwind.css
 FROM nginx:stable-alpine
 
 COPY --from=builder /src/src/ /usr/share/nginx/html
-
-CMD ["nginx", "-g", "daemon off;"]
