@@ -9,20 +9,21 @@ class sensor {
 
     }
 
-    create(div_id, new_dashboard_id) {                       //create div-box
+    create(new_div_id, new_dashboard_id) {                       //create div-box
         var cloneID = "0sensor" + new_dashboard_id;
         const clone = document.getElementById(cloneID);
         this.content = clone.cloneNode(true);
         this.content.classList.remove("hidden");
 
-        this.content.id = div_id + "sensor" + new_dashboard_id;
-        this.reset(0, div_id, new_dashboard_id, new_dashboard_id);
+        this.content.id = new_div_id + "sensor" + new_dashboard_id;
+        this.reset(0, new_div_id, new_dashboard_id, new_dashboard_id);
         this.dashboard_id = new_dashboard_id;
-
-        //this.content.classList.add(div_id);
 
         var sensorsId = "#sensors" + new_dashboard_id;
         document.querySelector(sensorsId).appendChild(this.content);
+
+        var id = new_div_id + "sensorName" + new_dashboard_id;
+        document.getElementById(id).innerText = this.sensor_name;
     }
 
     delete() {                       //delete div-box
@@ -49,6 +50,9 @@ class sensor {
                         ele3.id = new_div_id + "r" + new_dashboard_id;
                     } 
                 });
+                if(ele2.id == old_div_id + "sensorName" + old_dashboard_id){
+                    ele2.id = new_div_id + "sensorName" + new_dashboard_id;
+                }
             });
             if(ele.id == old_div_id + "d" + old_dashboard_id){
                 ele.id = new_div_id + "d" + new_dashboard_id;

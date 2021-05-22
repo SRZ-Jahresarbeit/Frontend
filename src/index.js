@@ -1,3 +1,9 @@
+function load_dashboard_order(){
+    
+}
+load_dashboard_order();
+
+
 function switchMenuBar(){
     const menu = document.querySelector("#menu");
     if (menu.classList.contains("hidden")){
@@ -165,10 +171,11 @@ async function addSensor(id){
             sensorID = sensors[i].id;
         }
     }
+    var new_sensor
     if (sensorID != null){
-        var new_sensor = new sensor(sensorName, sensorUnit, sensorID);
+        new_sensor = new sensor(sensorName, sensorUnit, sensorID);
     }else{  
-        var new_sensor = new sensor(sensorName, sensorUnit, sensorID);  //später soll das hier weg; jetzt: nur zum test
+        new_sensor = new sensor(sensorName, sensorUnit, sensorID);  //später soll das hier weg; jetzt: nur zum test
     }
 
     var new_sensorID = dashboards.list[parseInt(dashboardID)-1].length() + 1;
@@ -296,15 +303,29 @@ function selectTab(id){
                     document.querySelector(id2).classList.add("hidden")
                 }
             }
+            var id3 = "name" + i;
+            if(document.getElementById(id3).classList.contains("font-bold")){
+                document.getElementById(id3).classList.remove("font-bold");
+                document.getElementById(id3).classList.add("font-medium");
+            }
         }
     });
+    var menuHome = document.getElementById("menuHome");
+    if(document.getElementById("nameHome").classList.contains("font-bold")){
+        document.getElementById("nameHome").classList.remove("font-bold");
+        document.getElementById("nameHome").classList.add("font-medium");
+    }
 
     if(id == "menuHomeSelect"){                                             //select menu tab
         document.querySelector("#menuHome").classList.remove("unselectedTab");
         document.querySelector("#menuHome").classList.add("selectedTab");
         if(document.querySelector("#contentHome").classList.contains("hidden")){
             document.querySelector("#contentHome").classList.remove("hidden");
-        }     
+        } 
+        if(!document.getElementById("nameHome").classList.contains("font-bold")){
+            document.getElementById("nameHome").classList.add("font-bold");
+            document.getElementById("nameHome").classList.remove("font-medium");
+        }
     }
     for(var i = 1; i <= dashboards.length(); i++ ){                         //select dashboard tab with id
         if(id == "menuDashboardSelect"+i){
@@ -314,6 +335,12 @@ function selectTab(id){
             var id3 = "#dashboard" + i;
             if(document.querySelector(id3).classList.contains("hidden")){
                 document.querySelector(id3).classList.remove("hidden");
+           
+            }
+            var id4 = "name" + i;
+            if(!document.getElementById(id4).classList.contains("font-bold")){
+                document.getElementById(id4).classList.add("font-bold");
+                document.getElementById(id4).classList.remove("font-medium");
             }
         }
     }

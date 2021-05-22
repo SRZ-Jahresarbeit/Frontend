@@ -3,21 +3,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind screens;
 
 .btnadd{
-    @apply rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider
+    @apply rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider;
 }
 
 .sensor{
-    @apply sm:text-lg xl:text-xl mt-6 mr-6 p-4 w-full bg-white rounded-md overflow-hidden shadow-md
+    @apply sm:text-lg xl:text-xl mt-6 mr-6 p-4 w-full bg-white rounded-md overflow-hidden shadow-md;
 }
 
 .selectedTab{
-    @apply border-l-4 border-red-600 font-bold
+    @apply border-l-4 border-red-600 font-bold;
 }
 
 .unselectedTab{
-    @apply  border-l-4 border-white font-medium
+    @apply  border-l-4  border-white font-medium;
 }
 
 button:focus {
