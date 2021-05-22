@@ -350,6 +350,22 @@ function ausgabe(){
     console.log(APIgetSensors());
 }
 
+var path = "localhost:8080";
+
+function getPath(){
+    var value = document.getElementById('APIPath').value;
+
+    if(value.substring(0,7) == "http://"){
+        window.path = value.substring(7);
+    }else{
+        window.path = value;
+    }
+
+     
+}
+
+getPath()
+
 async function APIcreateSensor(name, unit){
     const data = {
         "name": name,
@@ -357,7 +373,7 @@ async function APIcreateSensor(name, unit){
     }
 
     try{
-        const response = await fetch("http://localhost:8080/sensor", {
+        const response = await fetch("http://" + window.path +"/sensor", {
             headers: {
             Accept: "*/*",
             "Content-Type": "application/json"
@@ -385,7 +401,7 @@ async function processAPICrSe(name, unit){
 }
 
 async function APIgetSensors(){
-    var path = "http://localhost:8080/sensor";
+    var path = "http://" + window.path +"/sensor";
     try{
         const response = await fetch(path, {
             headers: {
@@ -418,9 +434,9 @@ async function APIgetData(id, timefrom, timeto, resolution){
 
     if(timeto != 0 || timeto != null){
         timeto = convertTime(timeto); //Convert ISO 8601 Format to required format for fetching
-        var path = "http://localhost:8080/sensor/" + id + "/data/?from=" + timefrom + "&to=" + timeto + "&resolution=" + resolution; //set path for fetching from the API
+        var path = "http://" + window.path +"/sensor/" + id + "/data/?from=" + timefrom + "&to=" + timeto + "&resolution=" + resolution; //set path for fetching from the API
     }else{
-        var path = "http://localhost:8080/sensor/" + id + "/data/?from=" + timefrom + "&&resolution=" + resolution; //set path for fetching from the API
+        var path = "http://" + window.path +"/sensor/" + id + "/data/?from=" + timefrom + "&&resolution=" + resolution; //set path for fetching from the API
     }
 
     try{
@@ -580,7 +596,7 @@ async function APIchangeSensor(name, unit, id){
     }
 
     try{
-        const response = await fetch("http://localhost:8080/sensor/" + id, {
+        const response = await fetch("http://" + window.path +"/sensor/" + id, {
             headers: {
             Accept: "*/*",
             "Content-Type": "application/json"
