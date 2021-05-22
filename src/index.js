@@ -472,11 +472,15 @@ function convertTime(time){
 
 async function printSensors(){
     const APIresponseData = await APIgetSensors();
-    var temp = "<h1 class='mt-6 sm:text-lg xl:text-xl'>Sensoren</h1><table class='table-fixed'><tr><th class='w-1/5 text-left'>Name</th><th class='w-16'>Unit</th><th class='w-auto text-left'>id</th></tr>";
+    var temp = "<h1 class='mt-6 sm:text-lg xl:text-xl'>Sensoren</h1><table class='table-fixed'><tr><th class='w-1/5 text-left'>Name</th><th class='w-16'>Unit</th><th class='w-80 text-left'>id</th></tr>";
+    var i = 0;
     for (const sensor in APIresponseData) {
         if (Object.hasOwnProperty.call(APIresponseData, sensor)) {
             const element = APIresponseData[sensor];
-            temp += "<tr><td>" + element.name + "</td><td class='text-center'>" + element.unit + "</td><td>" + element.id + "</td></tr>";
+            temp += "<tr id='tr-" + i + "'><td name='name'>" + element.name + "</td><td class='text-center' name='unit'>" + element.unit + "</td><td name='id'>" + element.id + "</td><td><button type='button' onclick='changeSensorDiv(`tr-" + i + "`)'>" + 
+            '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'+
+            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button></td></tr>';
+            i++;
         }
     }
     temp += "</table>";
@@ -484,4 +488,83 @@ async function printSensors(){
     document.querySelector("#allSensors").innerHTML = temp;
     document.querySelector("#sName").value = "";
     document.querySelector("#sUnit").value = "";
+}
+
+function changeSensorDiv(id){
+    var data = document.getElementById(id);
+    const elements = data.getElementsByTagName('td');
+    var innerhtml = "";
+    var i = 0;
+
+    for (const key in elements) {
+        if (Object.hasOwnProperty.call(elements, key)) {
+            const element = elements[key];
+            if(i < 2){
+                innerhtml += "<input class='mt-2 h-6' type='text' value='" + element.innerText + "'><br>";
+            }else if(i < 3){
+                innerhtml += "<p>" + element.innerText + "</p>";
+            }
+
+            i++;
+        }
+    }
+
+    //console.log(data.getElementsByTagName('td')[0].innerText)
+    document.querySelector("#changeSensor").innerHTML = innerhtml + "<button type='button' onclick='changeSensor()' class='mt-2 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider'>Change</button>";
+    document.getElementById('changeSensor').style.display = "block";
+}
+
+async function changeSensor(){
+    const data = document.getElementById('changeSensor')
+    var i = 0;
+
+    const elements = data.getElementsByTagName("input");
+
+    var name = "";
+    var unit = "";
+
+    for (const key in elements) {
+        if (Object.hasOwnProperty.call(elements, key)) {
+            const element = elements[key];
+            if(i == 0){
+                name = element.value;
+            }else{
+                unit = element.value;
+            }
+            i++;
+        }
+    }
+
+    const id = data.getElementsByTagName('p')[0].innerHTML;
+
+    const APIresponseData = await APIchangeSensor(name, unit, id);
+
+    printSensors()
+
+    document.getElementById('changeSensor').style.display = "none";
+}
+
+async function APIchangeSensor(name, unit, id){
+
+    const data = {
+        "name": name,
+        "unit": unit,
+        "id": id
+    }
+
+    try{
+        const response = await fetch("http://localhost:8080/sensor/" + id, {
+            headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json"
+            },
+            method: "PUT",
+            body: JSON.stringify(data)
+        });
+        const responseData = await response.json();
+        return responseData;
+    }catch(error){
+        //alert(error);
+        console.error(error)
+    }
 }
