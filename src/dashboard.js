@@ -1,9 +1,11 @@
 class dashboard{
-    constructor(name){
+    constructor(name, id){
         this.list = [];
         this.dashboard_name = name;
         this.content = null;
         this.menuTab = null;
+
+        this.dashboard_id = id;
     }
     add(sensor){
         this.list.push(sensor);
@@ -20,6 +22,17 @@ class dashboard{
     }
     length(){
         return this.list.length;
+    }
+    APISaveDashboardvalues(){
+        var id = this.dashboard_id;   
+        var name = this.dashboard_name
+        var sensors = [];
+        for(var i = 0; i < this.list.length; i++){
+            sensors.push(this.list[i].sensor_id);
+        }
+        
+        var data = APIputDashboard(id, name, sensors);
+        console.log(data);
     }
     reset(old_dashboard_id, new_dashboard_id){
         this.content.id = "dashboard" + new_dashboard_id;
@@ -140,5 +153,7 @@ class dashboard{
         var dashboard = document.getElementById(this.content.id);
         document.getElementById("menu").removeChild(dashboard_tab);
         document.getElementById("container").removeChild(dashboard);
+
+        APIdeleteDashboard(this.dashboard_id);
     }
 }
