@@ -454,13 +454,12 @@ async function APIgetData(id, timefrom, timeto, resolution){
     
 }
 
-async function processAPIGeDa(){
-    //id, timefrom, timeto, resolution
+async function processAPIGeDa(id, timefrom, resolution, timeto){
 
-    var id = "2e6b4d73-776c-48cb-a118-47b79916df64";
+    /*var id = "2e6b4d73-776c-48cb-a118-47b79916df64";
     var timefrom = "2021-05-13T19:30:00Z";
     var timeto = "2021-05-13T19:32:44Z";
-    var resolution = "MINUTELY";
+    var resolution = "MINUTELY";*/
 
     const APIresponseData = await APIgetData(id, timefrom, timeto, resolution);
     var ChartData = [];
@@ -497,8 +496,13 @@ async function processAPIGeDa(){
     //1620934260
 }
 
-function createChart(){
-    processAPIGeDa()
+function createChart(id, timefrom, resolution, timeto){
+    var id;
+    var timefrom;
+    var resolution;
+    var timeto;
+
+    processAPIGeDa(id, timefrom, resolution, timeto)
 }
 
 function convertTime(time){
