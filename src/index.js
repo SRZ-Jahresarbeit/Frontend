@@ -1,8 +1,40 @@
-function load_dashboard_order(){
-    
-}
-load_dashboard_order();
+async function loadDashboardsAndSensorsFromBackend(){
 
+    var dashboard_list = await APIgetDashboards();
+    console.log(APIgetDashboards());
+    for(var i = 0; i < dashboard_list.length; i++){
+        var dashboard_name = dashboard_list[i].name;
+        var dashboard_id = dashboard_list[i].id;
+        var dashboard_sensors = dashboard_list[i].sensors;
+
+        var dashboard_div_id = dashboards.length() + 1;
+        var new_dashboard = new dashboard(dashboard_name, dashboard_id);
+        dashboards.add(new_dashboard); 
+        new_dashboard.create_dashboard(dashboard_div_id);
+
+        for(var x = 0; x < dashboard_sensors.length; x++){
+
+            var sensorID = dashboard_sensors[x];
+            var sensorName;
+            var sensorUnit;
+            var sensors = await APIgetSensors();
+            for(var y = 0; y < sensors.length; y++){
+                if(sensorID == sensors[y].id){
+                    sensorName = sensors[y].name;
+                    sensorUnit = sensors[y].unit;
+                }
+            }            
+            var new_sensor = new sensor(sensorName, sensorUnit, sensorID);
+
+            var sensor_div_id = dashboards.list[dashboard_div_id-1].length() + 1;
+            new_sensor.create(sensor_div_id, dashboard_div_id);
+            dashboards.list[dashboard_div_id-1].add(new_sensor);
+        
+        }
+    }
+}
+var dashboards = new dashboard_list();
+loadDashboardsAndSensorsFromBackend();
 
 function switchMenuBar(){
     const menu = document.querySelector("#menu");
@@ -40,7 +72,6 @@ function foldInfoldOut(this_id){
 }
 
 //let sensors = new dashboard("n");
-let dashboards = new dashboard_list();
 
 function getDashboardID(idname){    //Die Dashboard ID ist immer die letzte Zahl in der ID des Elements
                                     //die Funktion returnt "", wenn es keine DashboardID gibt
@@ -181,6 +212,7 @@ async function addSensor(id){
     var new_sensorID = dashboards.list[parseInt(dashboardID)-1].length() + 1;
     new_sensor.create(new_sensorID, parseInt(dashboardID));
     dashboards.list[parseInt(dashboardID)-1].add(new_sensor);
+    dashboards.list[parseInt(dashboardID)-1].APISaveDashboardvalues();
 
     console.log(dashboards.list[parseInt(dashboardID)-1].print_list());
 
@@ -198,11 +230,11 @@ function removeSensor(id){
     var sensorListID = sensorIDInt - 1;
     dashboard.list[sensorListID].delete();
     dashboard.remove(sensorListID);
+    dashboard.APISaveDashboardvalues();
 }
 
 
 function addDashboard(){
-
     const addDashboard = document.querySelector("#addDashboard");
     const createDashboard = document.querySelector("#createDashboard");
     addDashboard.classList.add("hidden");
@@ -215,17 +247,27 @@ function createDashboardCancel(){
     addDashboard.classList.remove("hidden");
     createDashboard.classList.add("hidden");
 }
-function createDashboard(){
-
-    createDashboardCancel();
+async function createDashboard(){
 
     var name = document.querySelector("#inputDName1").value;
-    var div_id = dashboards.length() + 1;
+    if(name.length > 0 && name.length <= 255){
+        createDashboardCancel();
+        var div_id = dashboards.length() + 1;
 
-    var new_dashboard = new dashboard(name);
-    dashboards.add(new_dashboard);
-    new_dashboard.create_dashboard(div_id);
-    console.log(dashboards.print_list());
+        console.log(APIgetDashboards());
+        var id = await processAPICrDashboard(name);
+
+        var new_dashboard = new dashboard(name, id);
+        dashboards.add(new_dashboard);
+        new_dashboard.create_dashboard(div_id);
+        new_dashboard.APISaveDashboardvalues();
+        console.log(dashboards.print_list());
+    }else{
+        alert("the name can't be empty");
+        alert("the max name length is 255");
+    }
+
+
 }
 function changeDashboardSettings(id){
     const addDashboard = document.querySelector("#addDashboard");
@@ -269,18 +311,20 @@ function renameDashboardCancel(){
 
 }
 function deleteDashboard(id){
-    var dashboardID = getDashboardID(id);
+    var div_dashboardID = getDashboardID(id);
     
-    var tab_id = "menuDashboard" + dashboardID;
+    var tab_id = "menuDashboard" + div_dashboardID;
     if(document.getElementById(tab_id).classList.contains("selectedTab")){
         selectTab("menuHomeSelect");
     }
 
-    var listID = parseInt(dashboardID) - 1;
+    var listID = parseInt(div_dashboardID) - 1;
     dashboards.list[listID].delete_dashboard();
     dashboards.remove(listID);
 
     renameDashboardCancel();
+
+    
 }
 
 function selectTab(id){
@@ -348,6 +392,107 @@ function selectTab(id){
 
 function ausgabe(){
     console.log(APIgetSensors());
+}
+
+async function APIgetDashboards(){
+    var path = "http://localhost:8080/dashboard";
+    try{
+        const response = await fetch(path, {
+            headers: {
+                Accept: "*/*"
+            },
+            method: "GET"
+        });
+        const responseData = await response.json();
+        console.log("get dashboards");
+        return responseData;
+    }
+    catch(error){
+        console.error(error);
+        alert("Backend kann nicht erreicht werden")
+        alert(error);
+    }
+}
+
+async function APIcreateDashboard(name){
+    const data = {
+        "name": name,
+        "sensors": []
+    }
+
+    try{
+        const response = await fetch("http://localhost:8080/dashboard", {
+            headers: {
+                Accept: "*/*",
+                "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify(data)
+        });
+        const responseData = await response.json();
+        console.log("dashboard");
+        console.log(responseData);
+        return responseData;
+    }catch(error){
+        alert(error);
+        console.error(error);
+    }
+}
+
+async function processAPICrDashboard(name){                     //create dashboard and return dashboard_id
+    const APIresponseData = await APIcreateDashboard(name);
+    const id = APIresponseData.id;
+
+    console.log("Created Sensor")
+
+    printSensors()
+
+    return id;
+}
+
+async function APIdeleteDashboard(id){
+    var url = "http://localhost:8080/dashboard/" + id;
+    try{
+        const response = await fetch(url, {
+            headers: {
+                Accept: "*/*"
+            },
+            method: "DELETE",
+        });
+        //const responseData = await response.json();
+        console.log("dashboard");
+        //console.log(responseData);
+        //return responseData;
+    }catch(error){
+        alert(error);
+        console.error(error);
+    }
+}
+
+async function APIputDashboard(id, name, sensors){
+    const data = {
+        "name": name,
+        "sensors": sensors,
+        "id": id
+    }
+    try{
+        url = "http://localhost:8080/dashboard/" + id;
+        const response = await fetch(url, {
+            headers: {
+                Accept: "*/*",
+                "Content-Type": "application/json"
+            },
+            method: "PUT",
+            body: JSON.stringify(data)
+        });
+        const responseData = await response.json();
+        console.log("dashboard");
+        console.log(responseData);
+        return responseData;
+    }catch(error){
+        //alert(error);
+        console.error(error);
+    }
 }
 
 var path = "localhost:8080";

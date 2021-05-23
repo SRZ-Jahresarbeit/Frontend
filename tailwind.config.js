@@ -25,7 +25,8 @@ module.exports = {
       minHeight:{
         "5pr": "5%",
         "95pr": "95%",
-        "600px": "600px",
+        "100pr": "100%",
+        "600px": "600px"
         
       },
       minWidth: {
