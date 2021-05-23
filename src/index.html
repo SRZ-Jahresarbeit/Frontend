@@ -181,23 +181,25 @@
                     </span>
                 </a>
             </p>
+            <input id="APIPath" type="text" value="localhost:8080" onchange="getPath(); printSensors()">
             <div class="mt-4" id="allSensors"></div>
-            <div class="mt-6">
-
-                <label for="sName">Sensor Name</label>
-                <br>
-                <input type="text" name="sName" id="sName">
-                <br>
-                <label for="sUnit">Sensor Unit</label>
-                <br>
-                <input type="text" name="sUnit" id="sUnit">
-                <br>
-
-                <button type='button'
-                    onclick='processAPICrSe(document.getElementById("sName").value, document.getElementById("sUnit").value);'
-                    class='mt-2 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider'>
-                    Create Sensor
-                </button>
+            <div class="mt-6 flex">
+                <div class="">
+                    <label for="sName">Sensor Name</label>
+                    <br>
+                    <input type="text" name="sName" id="sName">
+                    <br>
+                    <label for="sUnit">Sensor Unit</label>
+                    <br>
+                    <input type="text" name="sUnit" id="sUnit">
+                    <br>
+    
+                    <button type='button' onclick='processAPICrSe(document.getElementById("sName").value, document.getElementById("sUnit").value);' class='mt-2 border-4 border-red-600 hover:shadow-xl hover:bg-red-600 hover:text-white transition ease-out duration-500 rounded-md p-2 uppercase text-base font-bold cursor-pointer tracking-wider'>
+                        Create Sensor
+                    </button>
+                </div>
+                
+                <div class="flex ml-12 hidden" id="changeSensor">Change Sensor</div>
 
             </div>
         </div>
