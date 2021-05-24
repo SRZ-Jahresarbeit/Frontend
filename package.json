@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/SRZ-Jahresarbeit/Frontend#readme",
   "dependencies": {
+    "apexcharts": "^3.26.3",
     "autoprefixer": "^10.2.5",
     "postcss": "^8.2.8",
     "tailwindcss": "^2.0.4"

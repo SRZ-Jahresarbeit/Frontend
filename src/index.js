@@ -1,3 +1,44 @@
+var timefrom = "";
+var timeto = "";
+
+var resolutionList = ["MINUTELY", "HOURLY", "DAILY"];
+var resolutionStatus = 1;
+
+function resetChartPeriod(){
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = today.getMonth() + 1; //e.g. 5th month = 4
+    var day = today.getDate();
+    var hour = today.getHours();
+    var minute = today.getMinutes();
+    var second = today.getSeconds();
+
+    
+
+    var new_month;
+    if(month < 10){
+        new_month = "0" + month.toString();
+    }
+    if(resolutionList[resolutionStatus] == "MINUTELY"){
+        timefrom = "" + year + "-" + new_month + "-" + day + "T" + (hour-1) + ":" + minute + ":" + second + "Z";
+    }
+    if(resolutionList[resolutionStatus] == "HOURLY"){
+        timefrom = "" + year + "-" + new_month + "-" + (day-1) + "T" + hour + ":" + minute + ":" + second + "Z";
+    }
+    if(resolutionList[resolutionStatus] == "DAILY"){
+        month -= 1;
+        if(month < 10){
+            new_month = "0" + month.toString();
+        }
+        timefrom = "" + year + "-" + new_month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z";
+    }
+
+    //timefrom = "" + year + "-" + month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z";
+    timeto = "" + year + "-" + new_month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z";  
+}
+resetChartPeriod();
+
+
 async function loadDashboardsAndSensorsFromBackend(){
 
     var dashboard_list = await APIgetDashboards();
@@ -25,12 +66,20 @@ async function loadDashboardsAndSensorsFromBackend(){
                 }
             }            
             var new_sensor = new sensor(sensorName, sensorUnit, sensorID);
-
+            
+            resetChartPeriod();
+            new_sensor.timefrom = timefrom;
+            new_sensor.timeto = timeto;
             var sensor_div_id = dashboards.list[dashboard_div_id-1].length() + 1;
             new_sensor.create(sensor_div_id, dashboard_div_id);
             dashboards.list[dashboard_div_id-1].add(new_sensor);
-        
+
+            var id2 = sensor_div_id + "resolutionStatus" + dashboard_div_id;
+            document.getElementById(id2).innerText = resolutionList[1];
+
+            processAPIGeDa(sensorID, new_sensor.timefrom, resolutionList[resolutionStatus], new_sensor.timeto, sensor_div_id, dashboard_div_id);
         }
+        
     }
 }
 var dashboards = new dashboard_list();
@@ -169,11 +218,7 @@ async function refreshSensorData(id){
             sensorUnit.innerText = sensors[i].unit
             sensorID.innerText = sensors[i].id;
         }
-    }
-
-
-
-    
+    }  
 }
 
 async function addSensor(id){
@@ -209,13 +254,21 @@ async function addSensor(id){
         new_sensor = new sensor(sensorName, sensorUnit, sensorID);  //später soll das hier weg; jetzt: nur zum test
     }
 
-    var new_sensorID = dashboards.list[parseInt(dashboardID)-1].length() + 1;
-    new_sensor.create(new_sensorID, parseInt(dashboardID));
+    resetChartPeriod();
+    new_sensor.timefrom = timefrom;
+    new_sensor.timeto = timeto;
+    var new_sensor_div_ID = dashboards.list[parseInt(dashboardID)-1].length() + 1;
+    new_sensor.create(new_sensor_div_ID, parseInt(dashboardID));
     dashboards.list[parseInt(dashboardID)-1].add(new_sensor);
     dashboards.list[parseInt(dashboardID)-1].APISaveDashboardvalues();
 
     console.log(dashboards.list[parseInt(dashboardID)-1].print_list());
+    //createChart(sensorID, "2021-05-13T19:30:00Z", resolutionList[resolutionStatus], 0);
+    
+    processAPIGeDa(sensorID, new_sensor.timefrom, resolutionList[resolutionStatus], new_sensor.timeto, new_sensor_div_ID, dashboardID);
 
+    var id2 = new_sensor_div_ID + "resolutionStatus" + dashboardID;
+    document.getElementById(id2).innerText = resolutionList[1];
 }
 
 function removeSensor(id){
@@ -233,6 +286,70 @@ function removeSensor(id){
     dashboard.APISaveDashboardvalues();
 }
 
+
+
+function changeResolutionStatus(id){
+    var dashboard_div_id = getDashboardID(id);
+    var sensor_div_id = getSensorID(id);
+    var resolutionPlus = false;
+    if(id == sensor_div_id + "resolutionPlus" + dashboard_div_id){
+        resolutionPlus = true;
+    }
+    if(resolutionPlus == true && resolutionStatus != 2){
+        resolutionStatus += 1;
+    }
+    if(resolutionPlus == false && resolutionStatus != 0){
+        resolutionStatus -= 1;
+    }
+    var id2 = sensor_div_id + "resolutionStatus" + dashboard_div_id;
+    document.getElementById(id2).innerText = resolutionList[resolutionStatus];
+
+    var id3 = sensor_div_id + "chart" + dashboard_div_id;
+    var chart = document.getElementById(id3);
+    document.getElementById(id3).parentNode.removeChild(chart);
+    var sensor = dashboards.list[parseInt(dashboard_div_id) - 1].list[parseInt(sensor_div_id) - 1];
+    var sensorID = sensor.sensor_id;
+    processAPIGeDa(sensorID, sensor.timefrom, resolutionList[resolutionStatus], sensor.timeto, sensor_div_id, dashboard_div_id);
+
+}
+
+function changeChartSettings(id){
+    var dashboard_div_id = getDashboardID(id);
+    var sensor_div_id = getSensorID(id);
+
+    document.getElementById(sensor_div_id + "editChart" + dashboard_div_id).classList.remove("hidden");
+
+}
+
+function editChartCancel(id){
+    var dashboard_div_id = getDashboardID(id);
+    var sensor_div_id = getSensorID(id);
+
+    document.getElementById(sensor_div_id + "editChart" + dashboard_div_id).classList.add("hidden");
+}
+
+function editChart(id){
+    var dashboard_div_id = getDashboardID(id);
+    var sensor_div_id = getSensorID(id);
+
+    document.getElementById(sensor_div_id + "editChart" + dashboard_div_id).classList.add("hidden");
+
+    var id3 = sensor_div_id + "chart" + dashboard_div_id;
+    var chart = document.getElementById(id3);
+    document.getElementById(id3).parentNode.removeChild(chart);
+    var from = document.getElementById(sensor_div_id + "inputFrom" + dashboard_div_id).value;
+    var to = document.getElementById(sensor_div_id + "inputTo" + dashboard_div_id).value;
+    if(to == "now"){
+        to = "0";
+    }
+    var sensor = dashboards.list[parseInt(dashboard_div_id) - 1].list[parseInt(sensor_div_id) - 1];
+    var sensorID = sensor.sensor_id;
+    processAPIGeDa(sensorID, from, resolutionList[resolutionStatus], to, sensor_div_id, dashboard_div_id);
+
+    sensor.timefrom = from;
+    sensor.timeto = to;
+
+}
 
 function addDashboard(){
     const addDashboard = document.querySelector("#addDashboard");
@@ -302,6 +419,8 @@ function renameDashboard(id){
     dashboards.list[listID].dashboard_name = name;
     var name_id = "name" + dashboardID;
     document.getElementById(name_id).innerHTML = name;
+
+    dashboards.list[listID].APISaveDashboardvalues();
 }
 function renameDashboardCancel(){
     const addDashboard = document.querySelector("#addDashboard");
@@ -599,7 +718,7 @@ async function APIgetData(id, timefrom, timeto, resolution){
     
 }
 
-async function processAPIGeDa(id, timefrom, resolution, timeto){
+async function processAPIGeDa(id, timefrom, resolution, timeto, div_sensor_id, div_dashboard_id){
 
     /*var id = "2e6b4d73-776c-48cb-a118-47b79916df64";
     var timefrom = "2021-05-13T19:30:00Z";
@@ -634,8 +753,8 @@ async function processAPIGeDa(id, timefrom, resolution, timeto){
             size: 4
         }
     }
-
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    var div_id = div_sensor_id + "chart" + div_dashboard_id;
+    var chart = new ApexCharts(document.getElementById(div_id), options);
     chart.render();
 
     //1620934260
@@ -647,7 +766,7 @@ function createChart(id, timefrom, resolution, timeto){
     var resolution;
     var timeto;
 
-    processAPIGeDa(id, timefrom, resolution, timeto)
+    processAPIGeDa(id, timefrom, resolution, timeto);
 }
 
 function convertTime(time){
@@ -656,8 +775,9 @@ function convertTime(time){
     var temp2 = time.substring(14,16)
     var temp3 = time.substring(17,20)
 
-
-    var convertedTime = temp1 + "%3A" + temp2 + "%3A" + temp3;
+    if(time != "0"){
+        var convertedTime = temp1 + "%3A" + temp2 + "%3A" + temp3;
+    }
 
     return convertedTime;
 }

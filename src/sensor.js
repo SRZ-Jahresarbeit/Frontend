@@ -7,6 +7,9 @@ class sensor {
 
         this.dashboard_id = 0;
 
+        this.timefrom = null;
+        this.timeto = null;
+
     }
 
     create(new_div_id, new_dashboard_id) {                       //create div-box
@@ -23,7 +26,7 @@ class sensor {
         document.querySelector(sensorsId).appendChild(this.content);
 
         var id = new_div_id + "sensorName" + new_dashboard_id;
-        document.getElementById(id).innerText = this.sensor_name;
+        document.getElementById(id).innerText = this.sensor_name + ": " + this.sensor_unit;
     }
 
     delete() {                       //delete div-box
@@ -48,10 +51,45 @@ class sensor {
                     }
                     if(ele3.id == old_div_id + "r" + old_dashboard_id){
                         ele3.id = new_div_id + "r" + new_dashboard_id;
-                    } 
+                    }
+                    if(ele3.id == old_div_id + "r" + old_dashboard_id){
+                        ele3.id = new_div_id + "r" + new_dashboard_id;
+                    }
+                    if(ele3.id == old_div_id + "resolutionPlus" + old_dashboard_id){
+                        ele3.id = new_div_id + "resolutionPlus" + new_dashboard_id;
+                    }
+                    if(ele3.id == old_div_id + "resolutionMinus" + old_dashboard_id){
+                        ele3.id = new_div_id + "resolutionMinus" + new_dashboard_id;
+                    }
+                    if(ele3.id == old_div_id + "resolutionStatus" + old_dashboard_id){
+                        ele3.id = new_div_id + "resolutionStatus" + new_dashboard_id;
+                    }
+                    if(ele3.id == old_div_id + "changeChartSettings" + old_dashboard_id){
+                        ele3.id = new_div_id + "changeChartSettings" + new_dashboard_id;
+                    }
+                    if(ele3.id == old_div_id + "inputFrom" + old_dashboard_id){
+                        ele3.id = new_div_id + "inputFrom" + new_dashboard_id;
+                    }
+                    if(ele3.id == old_div_id + "inputTo" + old_dashboard_id){
+                        ele3.id = new_div_id + "inputTo" + new_dashboard_id;
+                    }
+                    ele3.childNodes.forEach(ele4 => {
+                        if(ele4.id == old_div_id + "editChartButton" + old_dashboard_id){
+                            ele4.id = new_div_id + "editChartButton" + new_dashboard_id;
+                        }
+                        if(ele4.id == old_div_id + "editChartCancelButton" + old_dashboard_id){
+                            ele4.id = new_div_id + "editChartCancelButton" + new_dashboard_id;
+                        }
+                    });
                 });
                 if(ele2.id == old_div_id + "sensorName" + old_dashboard_id){
                     ele2.id = new_div_id + "sensorName" + new_dashboard_id;
+                }
+                if(ele2.id == old_div_id + "editChart" + old_dashboard_id){
+                    ele2.id = new_div_id + "editChart" + new_dashboard_id;
+                }
+                if(ele2.id == old_div_id + "chart" + old_dashboard_id){
+                    ele2.id = new_div_id + "chart" + new_dashboard_id;
                 }
             });
             if(ele.id == old_div_id + "d" + old_dashboard_id){

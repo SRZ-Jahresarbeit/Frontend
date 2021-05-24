@@ -106,10 +106,42 @@ class dashboard{
                                 }
                                 if(ele7.id == "0r" + old_dashboard_id){
                                     ele7.id = "0r" + new_dashboard_id;
+                                }
+                                if(ele7.id == "0resolutionPlus" + old_dashboard_id){
+                                    ele7.id = "0resolutionPlus" + new_dashboard_id;
+                                }
+                                if(ele7.id == "0resolutionMinus" + old_dashboard_id){
+                                    ele7.id = "0resolutionMinus" + new_dashboard_id;
+                                }
+                                if(ele7.id == "0resolutionStatus" + old_dashboard_id){
+                                    ele7.id = "0resolutionStatus" + new_dashboard_id;
+                                }
+                                if(ele7.id == "0changeChartSettings" + old_dashboard_id){
+                                    ele7.id = "0changeChartSettings" + new_dashboard_id;
+                                }
+                                if(ele7.id == "0inputFrom" + old_dashboard_id){
+                                    ele7.id = "0inputFrom" + new_dashboard_id;
                                 } 
+                                if(ele7.id == "0inputTo" + old_dashboard_id){
+                                    ele7.id = "0inputTo" + new_dashboard_id;
+                                }
+                                ele7.childNodes.forEach(ele8 =>{
+                                    if(ele8.id == "0editChartButton" + old_dashboard_id){
+                                        ele8.id = "0editChartButton" + new_dashboard_id;
+                                    }
+                                    if(ele8.id == "0editChartCancelButton" + old_dashboard_id){
+                                        ele8.id = "0editChartCancelButton" + new_dashboard_id;
+                                    }
+                                })   
                             });
                             if(ele6.id == "0sensorName" + old_dashboard_id){
                                 ele6.id = "0sensorName" + new_dashboard_id;
+                            }
+                            if(ele6.id == "0chart" + old_dashboard_id){
+                                ele6.id = "0chart" + new_dashboard_id;
+                            }
+                            if(ele6.id == "0editChart" + old_dashboard_id){
+                                ele6.id = "0editChart" + new_dashboard_id;
                             }
                         });
                         if(ele5.id == "0d" + old_dashboard_id){
