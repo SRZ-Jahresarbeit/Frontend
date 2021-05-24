@@ -581,7 +581,7 @@ async function APIgetData(id, timefrom, timeto, resolution){
         timeto = convertTime(timeto); //Convert ISO 8601 Format to required format for fetching
         var path = "http://" + window.path +"/sensor/" + id + "/data/?from=" + timefrom + "&to=" + timeto + "&resolution=" + resolution; //set path for fetching from the API
     }else{
-        var path = "http://" + window.path +"/sensor/" + id + "/data/?from=" + timefrom + "&&resolution=" + resolution; //set path for fetching from the API
+        var path = "http://" + window.path +"/sensor/" + id + "/data/?from=" + timefrom + "&resolution=" + resolution; //set path for fetching from the API
     }
 
     try{
