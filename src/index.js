@@ -614,7 +614,7 @@ async function APIputDashboard(id, name, sensors){
     }
 }
 
-var path = localStorage.get('base-url') || "localhost:8080";
+var path = localStorage.getItem('base-url') || "localhost:8080";
 
 function getPath(){
     var value = document.getElementById('APIPath').value;
@@ -625,7 +625,7 @@ function getPath(){
         window.path = value;
     }     
     
-    localStorage.set('base-url', window.path)
+    localStorage.setItem('base-url', window.path)
 }
 
 async function APIcreateSensor(name, unit){
