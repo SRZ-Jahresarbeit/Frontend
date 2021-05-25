@@ -306,7 +306,7 @@ function changeResolutionStatus(id){
 
     var id3 = sensor_div_id + "chart" + dashboard_div_id;
     var chart = document.getElementById(id3);
-    document.getElementById(id3).parentNode.removeChild(chart);
+    chart.innerHTML = null;
     var sensor = dashboards.list[parseInt(dashboard_div_id) - 1].list[parseInt(sensor_div_id) - 1];
     var sensorID = sensor.sensor_id;
     processAPIGeDa(sensorID, sensor.timefrom, resolutionList[resolutionStatus], sensor.timeto, sensor_div_id, dashboard_div_id);
@@ -336,7 +336,7 @@ function editChart(id){
 
     var id3 = sensor_div_id + "chart" + dashboard_div_id;
     var chart = document.getElementById(id3);
-    document.getElementById(id3).parentNode.removeChild(chart);
+    chart.innerHTML = null;
     var from = document.getElementById(sensor_div_id + "inputFrom" + dashboard_div_id).value;
     var to = document.getElementById(sensor_div_id + "inputTo" + dashboard_div_id).value;
     if(to == "now"){
@@ -514,7 +514,7 @@ function ausgabe(){
 }
 
 async function APIgetDashboards(){
-    var path = "http://localhost:8080/dashboard";
+    var path = "http://" + window.path + "/dashboard";
     try{
         const response = await fetch(path, {
             headers: {
@@ -540,7 +540,7 @@ async function APIcreateDashboard(name){
     }
 
     try{
-        const response = await fetch("http://localhost:8080/dashboard", {
+        const response = await fetch("http://" + window.path + "/dashboard", {
             headers: {
                 Accept: "*/*",
                 "Content-Type": "application/json"
@@ -570,7 +570,7 @@ async function processAPICrDashboard(name){                     //create dashboa
 }
 
 async function APIdeleteDashboard(id){
-    var url = "http://localhost:8080/dashboard/" + id;
+    var url = "http://" + window.path + "/dashboard/" + id;
     try{
         const response = await fetch(url, {
             headers: {
@@ -595,7 +595,7 @@ async function APIputDashboard(id, name, sensors){
         "id": id
     }
     try{
-        url = "http://localhost:8080/dashboard/" + id;
+        url = "http://" + window.path + "/dashboard/" + id;
         const response = await fetch(url, {
             headers: {
                 Accept: "*/*",
@@ -724,7 +724,7 @@ async function processAPIGeDa(id, timefrom, resolution, timeto, div_sensor_id, d
     var timefrom = "2021-05-13T19:30:00Z";
     var timeto = "2021-05-13T19:32:44Z";
     var resolution = "MINUTELY";*/
-
+    //id = "4a94cfb6-8c75-49a3-8c06-6a379384352e";
     const APIresponseData = await APIgetData(id, timefrom, timeto, resolution);
     var ChartData = [];
 
