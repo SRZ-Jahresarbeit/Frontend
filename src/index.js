@@ -3,6 +3,7 @@ var timeto = "";
 
 var resolutionList = ["MINUTELY", "HOURLY", "DAILY"];
 var resolutionStatus = 1;
+var path = localStorage.getItem('base-url') || "localhost:8080";
 
 function resetChartPeriod(){
     var today = new Date();
@@ -613,8 +614,6 @@ async function APIputDashboard(id, name, sensors){
         console.error(error);
     }
 }
-
-var path = localStorage.getItem('base-url') || "localhost:8080";
 
 function getPath(){
     var value = document.getElementById('APIPath').value;
