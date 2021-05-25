@@ -628,8 +628,6 @@ function getPath(){
     localStorage.set('base-url', window.path)
 }
 
-getPath()
-
 async function APIcreateSensor(name, unit){
     const data = {
         "name": name,
