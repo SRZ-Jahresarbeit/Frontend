@@ -743,7 +743,10 @@ async function processAPIGeDa(id, timefrom, resolution, timeto, div_sensor_id, d
             data: ChartData
         }],
         xaxis: {
-            type: 'category'
+            type: 'datetime'
+        },
+        yaxis: {
+            decimalsInFloat: 2
         },
         markers: {
             size: 4
