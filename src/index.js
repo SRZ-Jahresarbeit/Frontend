@@ -692,12 +692,11 @@ async function APIgetData(id, timefrom, timeto, resolution){
 
     timefrom = convertTime(timefrom); //Convert ISO 8601 Format to required format for fetching
 
-
-    if(timeto != 0 || timeto != null){
+    if(timeto != '0' && timeto != null){
         timeto = convertTime(timeto); //Convert ISO 8601 Format to required format for fetching
-        var path = "http://" + window.path +"/sensor/" + id + "/data/?from=" + timefrom + "&to=" + timeto + "&resolution=" + resolution; //set path for fetching from the API
+        var path = "http://" + window.path + "/sensor/" + id + "/data/?from=" + timefrom + "&to=" + timeto + "&resolution=" + resolution; //set path for fetching from the API
     }else{
-        var path = "http://" + window.path +"/sensor/" + id + "/data/?from=" + timefrom + "&resolution=" + resolution; //set path for fetching from the API
+        var path = "http://" + window.path + "/sensor/" + id + "/data/?from=" + timefrom + "&resolution=" + resolution; //set path for fetching from the API
     }
 
     try{
@@ -757,23 +756,16 @@ async function processAPIGeDa(id, timefrom, resolution, timeto, div_sensor_id, d
     //1620934260
 }
 
-function createChart(id, timefrom, resolution, timeto){
-    var id;
-    var timefrom;
-    var resolution;
-    var timeto;
-
-    processAPIGeDa(id, timefrom, resolution, timeto);
-}
-
 function convertTime(time){
 
     var temp1 = time.substring(0,13)
     var temp2 = time.substring(14,16)
     var temp3 = time.substring(17,20)
 
-    if(time != "0"){
+    if(time != '0' && time != null){
         var convertedTime = temp1 + "%3A" + temp2 + "%3A" + temp3;
+    }else{
+        var convertedTime = null;
     }
 
     return convertedTime;
@@ -781,14 +773,18 @@ function convertTime(time){
 
 async function printSensors(){
     const APIresponseData = await APIgetSensors();
-    var temp = "<h1 class='mt-6 sm:text-lg xl:text-xl'>Sensoren</h1><table class='table-fixed'><tr><th class='w-1/5 text-left'>Name</th><th class='w-16'>Unit</th><th class='w-80 text-left'>id</th></tr>";
+    var temp = "<h1 class='mt-6 sm:text-lg xl:text-xl'>Sensoren</h1><table class='table-fixed'><tr><th class='text-left'>Name</th><th class='text-left'>Unit</th><th class='text-left'>id</th></tr>";
     var i = 0;
     for (const sensor in APIresponseData) {
         if (Object.hasOwnProperty.call(APIresponseData, sensor)) {
             const element = APIresponseData[sensor];
-            temp += "<tr id='tr-" + i + "'><td name='name'>" + element.name + "</td><td class='text-center' name='unit'>" + element.unit + "</td><td name='id'>" + element.id + "</td><td><button type='button' onclick='changeSensorDiv(`tr-" + i + "`)'>" + 
+            temp += "<tr id='tr-" + i + "'><td name='name'>" + element.name + "</td><td class='text-center' name='unit'>" + element.unit + "</td><td name='id'><p class='inline'>" + element.id + "</p><button type='button' class='ml-1' onclick='changeSensorDiv(`tr-" + i + "`)'>" + 
             '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'+
-            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button></td></tr>';
+            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>'+
+            '<button type="button" class="ml-1" onclick="processAPIDeSe(`tr-' + i + '`)"> <svg class="w-6 h-6 rounded-full hover:border-gray-200 hover:bg-gray-200 transition ease-out duration-1000"' +
+            'fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>'+
+            '</svg></button></td></tr>';
             i++;
         }
     }
@@ -877,3 +873,45 @@ async function APIchangeSensor(name, unit, id){
         console.error(error)
     }
 }
+
+async function APIdeleteSensor(id){
+    try{
+        const response = await fetch("http://" + window.path + "/sensor/" + id,{
+            headers:{
+                Accept: "*/*"
+            },
+            method: "DELETE"
+        });
+        const responseData = await response.json();
+        return responseData;
+    }catch(error){
+        console.error(error);
+    }
+}
+
+async function processAPIDeSe(div_id){
+
+    var data = document.getElementById(div_id);
+    const elements = data.getElementsByTagName('td');
+    var i = 0;
+    var id;
+
+    for (const key in elements) {
+        if (Object.hasOwnProperty.call(elements, key)) {
+            const element = elements[key];
+            if(i == 2){
+                console.log(element)
+                id = element.innerText;
+            }
+            i++;
+        }
+    }
+
+    console.log(id)
+
+    const APIresponseData = await APIdeleteSensor(id);
+    window.alert("Successfully Deleted Sensor")
+    printSensors()
+}
+
+printSensors()
