@@ -726,7 +726,7 @@ async function processAPIGeDa(id, timefrom, resolution, timeto, div_sensor_id, d
 
     for(var i = 0; i < APIresponseData.length; i++){
         ChartData[i] = {
-          x: APIresponseData[i].timestamp,
+          x: APIresponseData[i].timestamp*1000, // apex charts requires miliseonds and not seconds (unix timestamp is in seconds)
           y: APIresponseData[i].value
         }
     }
