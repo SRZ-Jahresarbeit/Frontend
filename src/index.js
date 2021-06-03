@@ -7,40 +7,48 @@ var path = localStorage.getItem('base-url') || "localhost:8080";
 
 function resetChartPeriod(){
     var today = new Date();
-    var year = today.getFullYear();
+    var new_date = new Date();
+    /*var year = today.getFullYear();
     var month = today.getMonth() + 1; //e.g. 5th month = 4
     var day = today.getDate();
     var hour = today.getHours();
     var minute = today.getMinutes();
-    var second = today.getSeconds();
+    var second = today.getSeconds();*/
 
-    
 
-    var new_month;
+    /*var new_month;
     if(month < 10){
-        new_month = "0" + month.toString();
-    }
+        //new_month = "0" + month.toString();
+    }*/
     if(resolutionList[resolutionStatus] == "MINUTELY"){
-        timefrom = "" + year + "-" + new_month + "-" + day + "T" + (hour-1) + ":" + minute + ":" + second + "Z";
+        //timefrom = "" + year + "-" + new_month + "-" + day + "T" + (hour-1) + ":" + minute + ":" + second + "Z";
+        new_date.setHours(new_date.getHours()-1);
     }
     if(resolutionList[resolutionStatus] == "HOURLY"){
-        timefrom = "" + year + "-" + new_month + "-" + (day-1) + "T" + hour + ":" + minute + ":" + second + "Z";
+        //timefrom = "" + year + "-" + new_month + "-" + (day-1) + "T" + hour + ":" + minute + ":" + second + "Z";
+        new_date.setDate(new_date.getDate()-1);
     }
     if(resolutionList[resolutionStatus] == "DAILY"){
-        month -= 1;
+        /*month -= 1;
         if(month < 10){
             new_month = "0" + month.toString();
         }
-        timefrom = "" + year + "-" + new_month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z";
+        timefrom = "" + year + "-" + new_month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z";*/
+        new_date.setMonth(new_date.getMonth()-1);
     }
+    
 
     //timefrom = "" + year + "-" + month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z";
-    timeto = "" + year + "-" + new_month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z";  
+    //timeto = "" + year + "-" + new_month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z"; 
+    timeto = today.toISOString();
+    timefrom = new_date.toISOString();
 }
 resetChartPeriod();
 
 
 async function loadDashboardsAndSensorsFromBackend(){
+
+    document.getElementById("APIPath").value = "localhost:8080";
 
     var dashboard_list = await APIgetDashboards();
     console.log(APIgetDashboards());
@@ -690,10 +698,10 @@ async function processAPIGeSe(){
 async function APIgetData(id, timefrom, timeto, resolution){
     //Time Example: 2021-04-30T12%3A33%3A00Z  -  2021-04-30T12:33:00Z
 
-    timefrom = convertTime(timefrom); //Convert ISO 8601 Format to required format for fetching
+    //timefrom = convertTime(timefrom); //Convert ISO 8601 Format to required format for fetching
 
     if(timeto != '0' && timeto != null){
-        timeto = convertTime(timeto); //Convert ISO 8601 Format to required format for fetching
+        //timeto = convertTime(timeto); //Convert ISO 8601 Format to required format for fetching
         var path = "http://" + window.path + "/sensor/" + id + "/data/?from=" + timefrom + "&to=" + timeto + "&resolution=" + resolution; //set path for fetching from the API
     }else{
         var path = "http://" + window.path + "/sensor/" + id + "/data/?from=" + timefrom + "&resolution=" + resolution; //set path for fetching from the API
