@@ -34,7 +34,8 @@ class dashboard{
         var data = APIputDashboard(id, name, sensors);
         console.log(data);
     }
-    reset(old_dashboard_id, new_dashboard_id){
+    reset(old_dashboard_id, new_dashboard_id){          //reset the div_id's from the dashboard-elements
+                                                        //ID structure: sensorDivID + ElementName + dashboardDivID
         this.content.id = "dashboard" + new_dashboard_id;
 
         if(this.menuTab != null){
@@ -158,24 +159,24 @@ class dashboard{
         return this.list;
     }
 
-    create_dashboard(id){
+    create_dashboard(div_id){
         const clone = document.querySelector("#dashboard0");
         this.content = clone.cloneNode(true);
-        this.content.id = "dashboard" + id;
-        this.reset(0, id);
+        this.content.div_id = "dashboard" + div_id;
+        this.reset(0, div_id);
         document.querySelector("#container").appendChild(this.content);
 
         const cloneMenuTab = document.querySelector("#menuDashboard0");
         this.menuTab = cloneMenuTab.cloneNode(true);
-        this.menuTab.id = "menuDashboard" + id;
-        this.reset(0, id);
+        this.menuTab.div_id = "menuDashboard" + div_id;
+        this.reset(0, div_id);
         this.menuTab.classList.remove("hidden")
         document.querySelector("#menu").appendChild(this.menuTab);
 
         this.menuTab.childNodes.forEach(ele => {
             ele.childNodes.forEach(ele1 => {         
-                if (ele1.id == ("name" + id)) {
-                    ele1.innerHTML = this.dashboard_name;
+                if (ele1.id == ("name" + div_id)) {
+                    ele1.innerText = this.dashboard_name;
                 }
             })
         });

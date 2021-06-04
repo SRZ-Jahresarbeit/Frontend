@@ -35,8 +35,9 @@ class sensor {
         document.querySelector(id).removeChild(sensor);
     }
 
-    reset(old_div_id, new_div_id, old_dashboard_id, new_dashboard_id) {         //reset div-id's
-        	                                                                    //all values are strings
+    reset(old_div_id, new_div_id, old_dashboard_id, new_dashboard_id) {         //reset the div_id's from the sensor-elements
+        	                                                                    //all values are strings#
+                                                                                //ID structure: sensorDivID + ElementName + dashboardDivID
         this.content.id = new_div_id + "sensor" + new_dashboard_id;      
         this.dashboard_id = new_dashboard_id;
 

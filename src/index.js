@@ -5,6 +5,8 @@ var resolutionList = ["MINUTELY", "HOURLY", "DAILY"];
 var resolutionStatus = 1;
 var path = localStorage.getItem('base-url') || "localhost:8080";
 
+window.path = "localhost:8080";
+
 function resetChartPeriod(){
     var today = new Date();
     var new_date = new Date();
@@ -376,9 +378,10 @@ function createDashboardCancel(){
 async function createDashboard(){
 
     var name = document.querySelector("#inputDName1").value;
+    var div_id;
     if(name.length > 0 && name.length <= 255){
         createDashboardCancel();
-        var div_id = dashboards.length() + 1;
+        div_id = dashboards.length() + 1;
 
         console.log(APIgetDashboards());
         var id = await processAPICrDashboard(name);
