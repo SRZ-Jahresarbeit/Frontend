@@ -3,9 +3,7 @@ var timeto = "";
 
 var resolutionList = ["MINUTELY", "HOURLY", "DAILY"];
 var resolutionStatus = 1;
-var path = localStorage.getItem('base-url') || "localhost:8080";
-
-window.path = "localhost:8080";
+window.path = localStorage.getItem('base-url') || "localhost:8080";
 
 function resetChartPeriod(){
     var today = new Date();
@@ -347,7 +345,7 @@ function editChart(id){
 
     var id3 = sensor_div_id + "chart" + dashboard_div_id;
     var chart = document.getElementById(id3);
-    chart.innerHTML = null;
+    //chart.innerHTML = null;
     var from = document.getElementById(sensor_div_id + "inputFrom" + dashboard_div_id).value;
     var to = document.getElementById(sensor_div_id + "inputTo" + dashboard_div_id).value;
     if(to == "now"){
@@ -765,9 +763,23 @@ async function processAPIGeDa(id, timefrom, resolution, timeto, div_sensor_id, d
     }
     var div_id = div_sensor_id + "chart" + div_dashboard_id;
     var chart = new ApexCharts(document.getElementById(div_id), options);
+
+    var sensor_chart = dashboards.list[parseInt(div_dashboard_id)-1].list[parseInt(div_sensor_id)-1].chart;
+    if(sensor_chart != null){
+        sensor_chart.destroy();
+        
+    }
+    dashboards.list[parseInt(div_dashboard_id)-1].list[parseInt(div_sensor_id)-1].chart = chart;
+
     chart.render();
 
     //1620934260
+
+
+
+    //to refresh the chart
+    document.getElementById(div_sensor_id + "editChart" + div_dashboard_id).classList.remove("hidden");
+    document.getElementById(div_sensor_id + "editChart" + div_dashboard_id).classList.add("hidden");
 }
 
 function convertTime(time){

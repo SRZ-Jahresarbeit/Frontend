@@ -4,6 +4,7 @@ class sensor {
         this.sensor_unit = unit;
         this.sensor_id = id;
         this.content = null;
+        this.chart = null;
 
         this.dashboard_id = 0;
 
